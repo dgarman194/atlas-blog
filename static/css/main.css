@@ -1,0 +1,482 @@
+/* ═══════════════════════════════════════════════════════════
+   ATLAS BLOG — Transmissions
+   Cosmic minimalism. Deep space readability.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #060a13;
+  --bg-elevated: #0c1220;
+  --surface: rgba(14, 22, 40, 0.65);
+  --border: rgba(59, 130, 246, 0.1);
+  --border-hover: rgba(59, 130, 246, 0.25);
+  --gold: #d4a843;
+  --gold-dim: rgba(212, 168, 67, 0.6);
+  --gold-glow: rgba(212, 168, 67, 0.12);
+  --blue: #3b82f6;
+  --blue-glow: rgba(59, 130, 246, 0.1);
+  --cyan: #22d3ee;
+  --text: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --prose-width: 680px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+  font-size: 18px;
+}
+
+#starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Navigation ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: rgba(6, 10, 19, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.nav-eagle {
+  font-size: 24px;
+  filter: drop-shadow(0 0 8px var(--gold-glow));
+}
+
+.nav-name {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--gold), #f0d68a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-links a {
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+/* ── Content Container ── */
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--prose-width);
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+
+/* ── Index Hero ── */
+.index-hero {
+  text-align: center;
+  margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-avatar {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(212, 168, 67, 0.3);
+  box-shadow: 0 0 40px var(--gold-glow), 0 0 80px rgba(212, 168, 67, 0.05);
+}
+
+.hero-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--gold), #f0d68a, var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+}
+
+.hero-subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── Post Cards ── */
+.post-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.post-card {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  padding: 32px;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.post-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 24px var(--blue-glow);
+}
+
+.post-card-date {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.post-card-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--text), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.post-card:hover .post-card-title {
+  background: linear-gradient(135deg, var(--gold), #f0d68a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.post-card-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.post-card-meta {
+  display: flex;
+  gap: 12px;
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Tags ── */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  background: var(--blue-glow);
+  color: var(--blue);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+/* ── Post Page ── */
+.post { animation: fadeIn 0.5s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.post-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.post-reading { color: var(--gold-dim); }
+
+.post-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.post-description {
+  font-size: 20px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.post-tags {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ── Post Body (Prose) ── */
+.post-body {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.post-body h2 {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 48px;
+  margin-bottom: 20px;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.post-body h3 {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 36px;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.post-body p {
+  margin-bottom: 24px;
+}
+
+.post-body a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-decoration-color: var(--gold-dim);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+
+.post-body a:hover {
+  text-decoration-color: var(--gold);
+}
+
+.post-body blockquote {
+  margin: 32px 0;
+  padding: 20px 24px;
+  border-left: 3px solid var(--gold);
+  background: rgba(212, 168, 67, 0.04);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.post-body blockquote p:last-child { margin-bottom: 0; }
+
+.post-body code {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.88em;
+  padding: 2px 7px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  border-radius: 5px;
+  color: var(--cyan);
+}
+
+.post-body pre {
+  margin: 28px 0;
+  padding: 20px 24px;
+  background: rgba(4, 8, 16, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+.post-body pre code {
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.post-body ul, .post-body ol {
+  margin-bottom: 24px;
+  padding-left: 28px;
+}
+
+.post-body li {
+  margin-bottom: 8px;
+}
+
+.post-body hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 48px 0;
+}
+
+.post-body strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.post-body em {
+  color: var(--text-secondary);
+}
+
+.post-body img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 32px 0;
+  border: 1px solid var(--border);
+}
+
+/* ── Post Footer ── */
+.post-footer {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(212, 168, 67, 0.25);
+}
+
+.author-name {
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.author-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.back-link {
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.back-link:hover { color: var(--gold); }
+
+/* ── Footer ── */
+.footer {
+  position: relative;
+  z-index: 1;
+  padding: 48px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+  max-width: var(--prose-width);
+  margin: 0 auto;
+}
+
+.footer p {
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.footer-sub {
+  margin-top: 4px;
+  font-size: 12px !important;
+  color: var(--text-muted) !important;
+  opacity: 0.5;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  body { font-size: 17px; }
+  .nav { padding: 12px 16px; }
+  .nav-name { font-size: 14px; letter-spacing: 2px; }
+  .content { padding: 40px 16px 60px; }
+  .hero-title { font-size: 32px; letter-spacing: 4px; }
+  .hero-subtitle { font-size: 15px; }
+  .post-title { font-size: 30px; }
+  .post-description { font-size: 17px; }
+  .post-card { padding: 24px 20px; }
+  .post-card-title { font-size: 20px; }
+  .post-footer { flex-direction: column; gap: 24px; align-items: flex-start; }
+}
