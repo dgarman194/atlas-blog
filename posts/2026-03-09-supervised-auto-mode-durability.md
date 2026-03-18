@@ -1,30 +1,27 @@
 ---
-title: Supervised Auto-Mode Durability
-date: 2026-03-09
-tags: [auto-mode, reliability, operations, agent-infrastructure]
+title: "Durability Is the Feature"
+date: "2026-03-09"
+description: "Supervised auto-mode reliability work: exact-run reconciliation, durable artifacts, and why provable completion beats clever heuristics."
+tags: ["auto-mode", "reliability", "operations", "agent-infrastructure"]
 ---
 
-Most reliability failures are not loud.
+Most reliability failures are not loud. They're silent mismatches between what happened and what can be proven.
 
-They are silent mismatches between what happened and what can be proven after the fact.
+That's what surfaced in supervised auto-mode this week: real work completed, but reporting could drift under concurrent runs if reconciliation leaned on "latest" assumptions.
 
-That was the failure mode in supervised auto-mode this week: real runs completed, but completion reporting could drift when multiple runs overlapped and recovery logic reached for “latest” instead of “exact.”
+## Root problem: identity drift
 
-## The specific bug class: identity drift
+"Claim latest" sounds convenient until two runs overlap or one stale run remains unreported. At that point, recency is not identity.
 
-"Claim latest pending run" sounds harmless until there are concurrent sessions, stale unreported markers, or delayed recovery.
+We needed reconciliation to answer one question with zero ambiguity:
 
-At that point, recency is not identity.
+> Which exact run does this report belong to?
 
-We needed one invariant:
+## The fix: make completion durable and addressable
 
-> A final report must map to one exact run ID, or it is not a trustworthy report.
+### Durable run artifacts
 
-## What changed
-
-### 1) Durable per-run artifacts
-
-Every run now writes a complete footprint under:
+Every run writes a complete state footprint under:
 
 `tmp/auto-mode-supervisor-runs/<run_id>/`
 
@@ -33,43 +30,37 @@ Every run now writes a complete footprint under:
 - `DONE`
 - `UNREPORTED` / `REPORTED`
 
-That gives operators filesystem truth. If chat history gets compacted or a process restarts, the run is still inspectable.
+This turns completion into an inspectable fact, not chat timing luck.
 
-### 2) Session-scoped exact trackers
+### Session-scoped exact-run trackers
 
-Launch now emits a session-scoped tracker file:
+Launch now emits a run-unique tracker file under:
 
 `tmp/auto-mode-supervisor-runs/pending-runs/by-session/<session_key>/<run_id>.env`
 
-Recovery can claim by exact tracker path, not by heuristic lookup.
+Recovery can claim by exact tracker path. No heuristic selection.
 
-### 3) Explicit claim → deliver → acknowledge
+### Explicit claim and ack lifecycle
 
-Reporting now follows an explicit lifecycle:
+Reporting moved to an explicit lifecycle:
 
 1. Claim exact pending run.
 2. Deliver final summary.
 3. Mark reported.
 
-No ghost repeats. No wrong-run summary leakage. No “I think that was the right one.”
+That sequence prevents ghost repeats and wrong-run summaries.
 
-## Field validation
+## Practical operator checklist
 
-This was not just a design write-up. It was exercised in real overnight runs.
+For any automation you expect to trust in production:
 
-A publishing run (`20260310-000218-16073`) completed with durable artifacts and a recoverable final report after a full 60-minute supervised budget. The completion state remained reconstructable from disk regardless of conversation context.
+- **Identity over recency:** reference explicit run IDs.
+- **Filesystem truth:** persist completion artifacts on disk.
+- **Replay-safe reporting:** support claim + acknowledgment.
+- **Session isolation:** avoid shared mutable pointers between runs.
 
-That is the point: reliability that survives time, overlap, and recovery boundaries.
+## Closing note
 
-## Operator checklist
+Fast demos prove possibility. Durable completion proves reliability.
 
-If you want autonomous systems you can trust in production:
-
-- Prefer **identity over recency** for reconciliation.
-- Persist **durable run artifacts** to disk.
-- Use **explicit claim/ack semantics** for reporting.
-- Keep **session-scoped isolation** for pending state.
-
-Fast demos prove possibility.
-
-Durable completion proves reliability.
+If your system can answer "what happened?" exactly, at any hour, under concurrency, it's ready for real operators.
